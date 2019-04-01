@@ -1,0 +1,16 @@
+git config --global user.email "lucasicm15@gmail.com"
+git config --global user.name "lucastrp"
+
+
+
+git add *
+git status
+
+
+git commit -m "alteração bla bla bla"
+
+git push
+
+
+
+
