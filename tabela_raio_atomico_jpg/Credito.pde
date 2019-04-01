@@ -7,7 +7,7 @@ class Credito{
   boolean mais;
   
   Credito(){
-    botao = new Botao(width - 40, 20, 45, 20, "Créditos");
+    botao = new Botao(570, 20, 45, 20, "Créditos");
     f = loadFont("ArialUnicodeMS-11.vlw");
     mais = false;
   }

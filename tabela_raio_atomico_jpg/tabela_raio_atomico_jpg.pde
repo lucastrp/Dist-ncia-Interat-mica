@@ -31,7 +31,7 @@ boolean modo = true; //quando modo = TRUE, mostramos o gráfico da energia
 //quando modo = FALSE, mostramos o gráfico da força
 
 String[] elementos = {"Fe", "C", "Si", "Ge", "P", "Al", "Ga", "Cu", "Au", "As"};
-
+float[] tamanhos = {0,0,0,0,0,0,0,0,0,0};
 int n_elementos = elementos.length;
 
 
@@ -50,7 +50,7 @@ int w_height;
 
 
 void setup() {
-  size(700, 600/*, P3D*/);
+  size(600, 600/*, P3D*/);
   w_width = 500;
   w_height = 600;
   smooth();
