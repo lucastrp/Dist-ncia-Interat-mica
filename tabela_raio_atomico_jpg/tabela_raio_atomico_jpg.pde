@@ -44,12 +44,13 @@ PVector [] posicao;
 int tamanho_bola = 10;
 
 int current_choice = 0;
+//variáveis globais
 int w_width;
 int w_height;
 
 
 void setup() {
-  size(500, 600/*, P3D*/);
+  size(700, 600/*, P3D*/);
   w_width = 500;
   w_height = 600;
   smooth();
