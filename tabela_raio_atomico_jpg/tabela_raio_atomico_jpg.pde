@@ -31,26 +31,30 @@ boolean modo = true; //quando modo = TRUE, mostramos o gráfico da energia
 //quando modo = FALSE, mostramos o gráfico da força
 
 String[] elementos = {"Fe", "C", "Si", "Ge", "P", "Al", "Ga", "Cu", "Au", "As"};
-float[] tamanhos = {0,0,0,0,0,0,0,0,0,0};
+String[] elementos1 = {"Fe", "C", "Si", "Ge", "P", "Al", "Ga", "Cu", "Au", "As"};
+float[] tamanhos = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int n_elementos = elementos.length;
-
+int n_elementos1 = elementos1.length;
 
 color branco = color(255, 255, 255);
 color verde = color(0, 255, 0);
 color azul = color(50, 0, 255);
 color preto = color(0);
 color rosa = color(234, 173, 234);
+color ciano = color(162,205,255);
 PVector [] posicao;
+PVector [] posicao1;
 int tamanho_bola = 10;
 
 int current_choice = 0;
+int current_choice1 = 0;
 //variáveis globais
 int w_width;
 int w_height;
 
 
 void setup() {
-  size(600, 600/*, P3D*/);
+  size(500, 600/*, P3D*/);
   w_width = 500;
   w_height = 600;
   smooth();
@@ -60,8 +64,12 @@ void setup() {
 
   posicao = new PVector[n_elementos];
   for (int i=0; i < n_elementos; i++) {
-    posicao[i] = new PVector(450, 150 + (i * 20));
+    posicao[i] = new PVector(429, 150 + (i * 20));
   }  
+  posicao1 = new PVector[n_elementos1];
+  for (int i=0; i < n_elementos1; i++) {
+    posicao1[i] = new PVector(469, 150 + (i * 20));
+  }
   //inicialização
   physics = new ParticleSystem(0, .1);
   a = physics.makeParticle(1, 3*w_width/4, 5*w_height/16, 0);
@@ -89,7 +97,7 @@ void setup() {
   credito = new Credito();
 
   // inicialização da fonte
-  f = loadFont("CourierNewPS-BoldMT-28.vlw");
+  f = loadFont("CourierNewPS-BoldMT-38.vlw");
   textFont(f, 38);
 
 
@@ -174,6 +182,21 @@ void display() {
       ellipse(posicao[i].x, posicao[i].y, tamanho_bola - 1, tamanho_bola - 1);
     }
   }
+  for (int i = 0; i < n_elementos1; i++) {
+
+    fill(preto);
+    text(elementos1[i], posicao1[i].x + tamanho_bola + 10, posicao[i].y + 5);
+
+    noFill();
+    stroke(preto);
+    strokeWeight(2);
+    ellipse(posicao1[i].x, posicao1[i].y, tamanho_bola, tamanho_bola);
+    if (i == current_choice1) {
+      noStroke();
+      fill(ciano);
+      ellipse(posicao1[i].x, posicao1[i].y, tamanho_bola - 1, tamanho_bola - 1);
+    }
+  }
 }
 
 // função que desenha os botões
@@ -224,6 +247,11 @@ void mousePressed() {
   for (int i = 0; i < n_elementos; i++) {
     if ((mouseX > posicao[i].x - (tamanho_bola / 2)) && (mouseX < posicao[i].x + (tamanho_bola / 2)) && (mouseY > posicao[i].y - (tamanho_bola / 2)) && (mouseY < posicao[i].y + (tamanho_bola / 2))) {
       current_choice = i;
+    }
+  }
+  for (int i = 0; i < n_elementos1; i++) {
+    if ((mouseX > posicao1[i].x - (tamanho_bola / 2)) && (mouseX < posicao1[i].x + (tamanho_bola / 2)) && (mouseY > posicao1[i].y - (tamanho_bola / 2)) && (mouseY < posicao1[i].y + (tamanho_bola / 2))) {
+      current_choice1 = i;
     }
   }
 }
