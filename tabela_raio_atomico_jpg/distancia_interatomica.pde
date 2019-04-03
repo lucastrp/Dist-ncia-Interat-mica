@@ -24,15 +24,15 @@ Credito credito;
 PFont f; //fonte
 
 //CONSTANTES
-float raioA = 20; // raio do átomo que se move
-float raioB = 40; // raio do átomo fixo
+float raioA = 25; // raio do átomo que se move
+float raioB = 25; // raio do átomo fixo
 
 boolean modo = true; //quando modo = TRUE, mostramos o gráfico da energia
 //quando modo = FALSE, mostramos o gráfico da força
 
+String[] elementos1 = {"C - 70pm","P - 106pm","Si - 111pm","As - 119pm","Ge - 122pm","Fe - 126pm","Cu - 128pm","Ga - 135pm","Al - 143pm","Au - 144pm"};
 String[] elementos = {"Fe", "C", "Si", "Ge", "P", "Al", "Ga", "Cu", "Au", "As"};
-String[] elementos1 = {"Fe", "C", "Si", "Ge", "P", "Al", "Ga", "Cu", "Au", "As"};
-float[] tamanhos = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+float[] tamanhos = {20,30.28,31.71,34,34.85,36,36.57,38.57,39.57,40};
 int n_elementos = elementos.length;
 int n_elementos1 = elementos1.length;
 
@@ -54,8 +54,8 @@ int w_height;
 
 
 void setup() {
-  size(500, 600/*, P3D*/);
-  w_width = 500;
+  size(530, 600/*, P3D*/);
+  w_width = 530;
   w_height = 600;
   smooth();
   noStroke();
@@ -77,7 +77,7 @@ void setup() {
   b.makeFixed();
 
   // inicialização do gráfico 
-  origem = new PVector(b.position().x(), b.position().y() + 3*raioB );
+  origem = new PVector(b.position().x(), b.position().y() + 3*40 );
   g = new Grafico(origem, 100, 250, 30, 0, 100, -250);  
 
   g.rmin = (raioA + raioB)/g.escala_x; // colocamos o ponto mais baixo do grafico de energia na posição certa (soma dos raios)
@@ -98,13 +98,13 @@ void setup() {
 
   // inicialização da fonte
   f = loadFont("CourierNewPS-BoldMT-38.vlw");
-  textFont(f, 38);
+  textFont(f, 30);
 
 
   background(255);  
   // texto
   fill(0);
-  text("Distância de Ligação", w_width/2, w_height/8);
+  text("Distância de Ligação", w_width/2, w_height/24);
   textFont(f, 12);
   text("Gráfico:", 6*w_width/11, origem.y + w_height/8);
   textFont(f, 14);
@@ -140,7 +140,7 @@ void draw() {
 
   fill(255);
   rectMode(CORNERS);
-  rect(0, b.position().y() - raioB, w_width, b.position().y() + 3*raioB + g.y_max*g.escala_y + 5); //ao invés de atualizarmos a tela inteira
+  rect(0, b.position().y() - 50, w_width, b.position().y() + 3*50 + g.y_max*g.escala_y + 5); //ao invés de atualizarmos a tela inteira
   physics.tick(.2);                                                                              //o fazemos apenas com o retângulo em que
   display();                                                                                     //a animação ocorre
   g.desenha_grafico();
@@ -163,23 +163,21 @@ void display() {
   translate(a.position().x(), a.position().y()/*, a.position().z()*/);
   fill(247, 175, 255);
   //sphere(20);
-  ellipse(0, 0, 2*raioA, 2*raioA);
+  ellipse(0 +(raioB - raioA), 0, 2*raioA, 2*raioA);
   fill(100);
-  ellipse(0, 0, 10, 10);
+  ellipse(0+(raioB - raioA), 0, 10, 10);
   popMatrix();
   for (int i = 0; i < n_elementos; i++) {
 
     fill(preto);
-    text(elementos[i], posicao[i].x + tamanho_bola + 10, posicao[i].y + 5);
-
     noFill();
     stroke(preto);
     strokeWeight(2);
-    ellipse(posicao[i].x, posicao[i].y, tamanho_bola, tamanho_bola);
+    ellipse(posicao[i].x + 10, posicao[i].y, tamanho_bola, tamanho_bola);
     if (i == current_choice) {
       noStroke();
       fill(rosa);
-      ellipse(posicao[i].x, posicao[i].y, tamanho_bola - 1, tamanho_bola - 1);
+      ellipse(posicao[i].x + 10, posicao[i].y, tamanho_bola - 1, tamanho_bola - 1);
     }
   }
   for (int i = 0; i < n_elementos1; i++) {
@@ -190,11 +188,11 @@ void display() {
     noFill();
     stroke(preto);
     strokeWeight(2);
-    ellipse(posicao1[i].x, posicao1[i].y, tamanho_bola, tamanho_bola);
+    ellipse(posicao1[i].x - 15, posicao1[i].y, tamanho_bola, tamanho_bola);
     if (i == current_choice1) {
       noStroke();
       fill(ciano);
-      ellipse(posicao1[i].x, posicao1[i].y, tamanho_bola - 1, tamanho_bola - 1);
+      ellipse(posicao1[i].x - 15, posicao1[i].y, tamanho_bola - 1, tamanho_bola - 1);
     }
   }
 }
@@ -217,7 +215,7 @@ void segue() {
   if ((t < g.x_max - 1 && t > g.x_min) && (yt <= g.y_max && yt > g.y_min)) {
     noStroke();
     fill(255, 0, 0);
-    ellipse(g.o.x + t*(g.escala_x), g.o.y + yt*(g.escala_y), 10, 10);
+    ellipse(g.o.x + t*(g.escala_x)+(raioB - raioA), g.o.y + yt*(g.escala_y), 10, 10);
   }
 }
 
@@ -238,20 +236,24 @@ void mousePressed() {
     float dy = mouseY - a.position().y();
     float d = sqrt(dx*dx + dy*dy);
 
-    if ( d <= 20 && mouseX - b.position().x() > raioA + raioB && mouseX < width - raioA ) {
+    if ( d <= 20 && mouseX - b.position().x() > raioA + raioB && mouseX < w_width - raioA ) {
       a.makeFixed(); // para que o átomo não se mova quando paramos o mouse, fixamos-lo
       a.position().set(mouseX, a.position().y(), 0); // o átomo livre desloca-se para a posição do mouse
     }
   }
   credito.botao.mousePressed();
   for (int i = 0; i < n_elementos; i++) {
-    if ((mouseX > posicao[i].x - (tamanho_bola / 2)) && (mouseX < posicao[i].x + (tamanho_bola / 2)) && (mouseY > posicao[i].y - (tamanho_bola / 2)) && (mouseY < posicao[i].y + (tamanho_bola / 2))) {
+    if ((mouseX > posicao[i].x - (tamanho_bola / 2) - 10) && (mouseX < posicao[i].x + (tamanho_bola / 2) + 10) && (mouseY > posicao[i].y - (tamanho_bola / 2)) && (mouseY < posicao[i].y + (tamanho_bola / 2))) {
       current_choice = i;
+      raioA = tamanhos[i];
+      g.rmin = (raioA + raioB)/g.escala_x;
     }
   }
   for (int i = 0; i < n_elementos1; i++) {
-    if ((mouseX > posicao1[i].x - (tamanho_bola / 2)) && (mouseX < posicao1[i].x + (tamanho_bola / 2)) && (mouseY > posicao1[i].y - (tamanho_bola / 2)) && (mouseY < posicao1[i].y + (tamanho_bola / 2))) {
+    if ((mouseX > posicao1[i].x - (tamanho_bola / 2) -20) && (mouseX < posicao1[i].x + (tamanho_bola / 2) +20) && (mouseY > posicao1[i].y - (tamanho_bola / 2)) && (mouseY < posicao1[i].y + (tamanho_bola / 2))) {
       current_choice1 = i;
+      raioB = tamanhos[i];
+      g.rmin = (raioA + raioB)/g.escala_x;      
     }
   }
 }
