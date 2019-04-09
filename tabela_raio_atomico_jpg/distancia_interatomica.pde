@@ -161,11 +161,18 @@ void display() {
   popMatrix();
   pushMatrix();
   translate(a.position().x(), a.position().y()/*, a.position().z()*/);
-  fill(247, 175, 255);
   //sphere(20);
+  fill(247, 175, 255);
+  if(raioA >= raioB){
+  ellipse(0 +(raioA - raioB), 0, 2*raioA, 2*raioA);
+  fill(100);
+  ellipse(0+(raioA - raioB), 0, 10, 10);
+  }
+  else{
   ellipse(0 +(raioB - raioA), 0, 2*raioA, 2*raioA);
   fill(100);
   ellipse(0+(raioB - raioA), 0, 10, 10);
+  }
   popMatrix();
   for (int i = 0; i < n_elementos; i++) {
 
@@ -215,7 +222,7 @@ void segue() {
   if ((t < g.x_max - 1 && t > g.x_min) && (yt <= g.y_max && yt > g.y_min)) {
     noStroke();
     fill(255, 0, 0);
-    ellipse(g.o.x + t*(g.escala_x)+(raioB - raioA), g.o.y + yt*(g.escala_y), 10, 10);
+    ellipse(g.o.x + t*(g.escala_x)+(raioA - raioB), g.o.y + yt*(g.escala_y), 10, 10);
   }
 }
 
