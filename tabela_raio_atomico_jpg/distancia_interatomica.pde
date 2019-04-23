@@ -1,13 +1,13 @@
 
 /* 
- 
+
  Nesta animação foi utilizada a biblioteca 'physics' desenvolvida na Universidade de Princeton, EUA, a
  biblioteca consiste na união de classes e métodos de simulação   de interações físicas, com a possibilidade
  de estabelecimento de forças de atração e repulsão, assim como forças gravitacionais em objetos de uma 
  classe de partículas.
- 
+
  Mais informações a respeito da biblioteca em: http://www.cs.princeton.edu/~traer/physics/ 
- 
+
  */
 import traer.physics.*;
 
@@ -32,7 +32,7 @@ boolean modo = true; //quando modo = TRUE, mostramos o gráfico da energia
 
 String[] elementos1 = {"C - 70pm","P - 106pm","Si - 111pm","As - 119pm","Ge - 122pm","Fe - 126pm","Cu - 128pm","Ga - 135pm","Al - 143pm","Au - 144pm"};
 String[] elementos = {"Fe", "C", "Si", "Ge", "P", "Al", "Ga", "Cu", "Au", "As"};
-float[] tamanhos = {20,30.28,31.71,34,34.85,36,36.57,38.57,39.57,40};
+float[] tamanhos = {25,30.28,31.71,34,34.85,36,36.57,38.57,39.57,40};
 int n_elementos = elementos.length;
 int n_elementos1 = elementos1.length;
 
@@ -53,14 +53,8 @@ int w_width;
 int w_height;
 
 
-void setup() {
-  size(530, 600/*, P3D*/);
-  w_width = 530;
-  w_height = 600;
-  smooth();
-  noStroke();
-  rectMode(CORNERS);
-  textAlign(CENTER);
+void atualiza_atomos() 
+{
 
   posicao = new PVector[n_elementos];
   for (int i=0; i < n_elementos; i++) {
@@ -93,13 +87,25 @@ void setup() {
   grafico[0].psituacao = "LIBERADO";
   grafico[1] = new Botao(grafico[0].xpos + 1.4*grafico[0].comprimento, origem.y + w_height/8, 3*w_width/40, 12, "Força");
 
+}
+
+void setup() {
+  size(530, 600/*, P3D*/);
+  w_width = 530;
+  w_height = 600;
+  smooth();
+  noStroke();
+  rectMode(CORNERS);
+  textAlign(CENTER);
+
+  atualiza_atomos();
+
   //inicialização do botão de créditos
   credito = new Credito();
 
   // inicialização da fonte
-  f = loadFont("CourierNewPS-BoldMT-38.vlw");
+  f = loadFont("CourierNewPS-BoldMT-30.vlw");
   textFont(f, 30);
-
 
   background(255);  
   // texto
@@ -163,16 +169,10 @@ void display() {
   translate(a.position().x(), a.position().y()/*, a.position().z()*/);
   //sphere(20);
   fill(247, 175, 255);
-  if(raioA >= raioB){
-  ellipse(0 +(raioA - raioB), 0, 2*raioA, 2*raioA);
+  ellipse(0, 0, 2*raioA, 2*raioA);
   fill(100);
-  ellipse(0+(raioA - raioB), 0, 10, 10);
-  }
-  else{
-  ellipse(0 +(raioB - raioA), 0, 2*raioA, 2*raioA);
-  fill(100);
-  ellipse(0+(raioB - raioA), 0, 10, 10);
-  }
+  ellipse(0, 0, 10, 10);
+  
   popMatrix();
   for (int i = 0; i < n_elementos; i++) {
 
@@ -222,7 +222,7 @@ void segue() {
   if ((t < g.x_max - 1 && t > g.x_min) && (yt <= g.y_max && yt > g.y_min)) {
     noStroke();
     fill(255, 0, 0);
-    ellipse(g.o.x + t*(g.escala_x)+(raioA - raioB), g.o.y + yt*(g.escala_y), 10, 10);
+    ellipse(g.o.x + t*(g.escala_x)/*(raioA - raioB)*/, g.o.y + yt*(g.escala_y), 10, 10);
   }
 }
 
@@ -249,20 +249,22 @@ void mousePressed() {
     }
   }
   credito.botao.mousePressed();
+  // Tratamento do Menu
   for (int i = 0; i < n_elementos; i++) {
     if ((mouseX > posicao[i].x - (tamanho_bola / 2) - 10) && (mouseX < posicao[i].x + (tamanho_bola / 2) + 10) && (mouseY > posicao[i].y - (tamanho_bola / 2)) && (mouseY < posicao[i].y + (tamanho_bola / 2))) {
       current_choice = i;
       raioA = tamanhos[i];
-      g.rmin = (raioA + raioB)/g.escala_x;
+      atualiza_atomos();
     }
   }
   for (int i = 0; i < n_elementos1; i++) {
     if ((mouseX > posicao1[i].x - (tamanho_bola / 2) -20) && (mouseX < posicao1[i].x + (tamanho_bola / 2) +20) && (mouseY > posicao1[i].y - (tamanho_bola / 2)) && (mouseY < posicao1[i].y + (tamanho_bola / 2))) {
       current_choice1 = i;
       raioB = tamanhos[i];
-      g.rmin = (raioA + raioB)/g.escala_x;      
+      atualiza_atomos();
     }
   }
+  draw();
 }
 
 void mouseDragged() {
